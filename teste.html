@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>c4o5 | Background</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000000;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#digitalRain {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 1;
+}
+
+.scanlines {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0),
+                                rgba(255, 255, 255, 0) 50%,
+                                rgba(0, 0, 0, 0.1) 50%,
+                                rgba(0, 0, 0, 0.1)
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 10;
+    opacity: 0.5;
+}
+</style>
+</head>
+<body>
+<canvas id="digitalRain"></canvas>
+<div class="scanlines"></div>
+
+<script>
+// O window.onload garante que o plugin do KDE termine de montar a tela antes de rodar o JS
+window.onload = function() {
+    const canvas = document.getElementById('digitalRain');
+    const ctx = canvas.getContext('2d');
+    
+    let columns;
+    let drops = [];
+    const fontSize = 16;
+    const characters = '0123456789ABCDEF';
+    
+    function resizeCanvas() {
+        // Fallbacks adicionados: se window.innerWidth for 0, ele tenta pegar o tamanho da tela do sistema
+        canvas.width = window.innerWidth || window.screen.width;
+        canvas.height = window.innerHeight || window.screen.height;
+        
+        columns = Math.floor(canvas.width / fontSize);
+        
+        for (let x = 0; x < columns; x++) {
+            if (drops[x] === undefined) {
+                drops[x] = Math.floor(Math.random() * (canvas.height / fontSize)) * -1;
+            }
+        }
+    }
+    
+    window.addEventListener('resize', resizeCanvas);
+    resizeCanvas();
+    
+    function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.08)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.font = fontSize + 'px monospace';
+        
+        for (let i = 0; i < columns; i++) {
+            if (drops[i] >= 0) {
+                const text = characters.charAt(Math.floor(Math.random() * characters.length));
+                
+                ctx.fillStyle = i % 2 === 0 ? '#00f2ff' : '#bc13fe';
+                
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            }
+            
+            drops[i]++;
+            
+            if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+        }
+    }
+    
+    setInterval(draw, 40);
+};
+</script>
+</body>
+</html>
