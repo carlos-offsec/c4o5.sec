@@ -14,7 +14,6 @@ export default function VideoBackground() {
     const characters = "0123456789ABCDEF";
     let columns: number;
     let drops: number[] = [];
-    let animId: number;
 
     function resizeCanvas() {
       canvas!.width = window.innerWidth;
