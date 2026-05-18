@@ -27,12 +27,11 @@ export default function BlogPage() {
       >
         {/* === PAINEL ESQUERDO: Lista de Posts === */}
         <aside
-          className="h-full overflow-y-auto"
+          className={`h-full overflow-y-auto w-full lg:w-[360px] lg:min-w-[320px] p-6 sm:p-8 ${
+            selectedPost ? "hidden lg:block" : "block"
+          }`}
           style={{
-            width: "360px",
-            minWidth: "320px",
             borderRight: "1px solid rgba(0, 255, 65, 0.1)",
-            padding: "2rem 1.5rem",
             scrollbarWidth: "thin",
             scrollbarColor: "#00ff4130 transparent",
           }}
@@ -129,9 +128,10 @@ export default function BlogPage() {
 
         {/* === PAINEL DIREITO: Conteúdo do Post === */}
         <main
-          className="flex-1 h-full overflow-y-auto"
+          className={`flex-1 h-full overflow-y-auto p-4 sm:p-8 lg:p-10 ${
+            selectedPost ? "block" : "hidden lg:block"
+          }`}
           style={{
-            padding: "2rem 2.5rem",
             scrollbarWidth: "thin",
             scrollbarColor: "#00ff4130 transparent",
           }}
@@ -147,6 +147,14 @@ export default function BlogPage() {
                 className="mx-auto"
                 style={{ maxWidth: "52rem" }}
               >
+                {/* Botão Voltar para Mobile */}
+                <button
+                  onClick={() => setSelectedPost(null)}
+                  className="lg:hidden terminal-link text-xs mb-5 inline-block cursor-pointer"
+                >
+                  ← cd ../Blog
+                </button>
+
                 <div
                   className="terminal-card"
                   style={{ padding: "2rem 2.5rem", overflowX: "hidden" }}
