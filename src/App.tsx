@@ -11,6 +11,7 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/sobre" element={<SobrePage />} />
           <Route path="/blog" element={<BlogPage />} />
+          <Route path="/blog/:slug" element={<BlogPage />} />
         </Routes>
       </div>
     </HashRouter>

@@ -1,19 +1,21 @@
-import { useState } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import VideoBackground from "../components/VideoBackground";
 import Navbar from "../components/Navbar";
 import { getAllPosts, getPostBySlug } from "../blog/loader";
-import type { Post } from "../blog/loader";
 
 export default function BlogPage() {
   const posts = getAllPosts();
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const { slug } = useParams<{ slug?: string }>();
+  const navigate = useNavigate();
 
-  function handleSelect(slug: string) {
-    const post = getPostBySlug(slug);
-    if (post) setSelectedPost(post);
+  // O post ativo é derivado diretamente do slug na URL
+  const selectedPost = slug ? getPostBySlug(slug) || null : null;
+
+  function handleSelect(postSlug: string) {
+    navigate(`/blog/${postSlug}`);
   }
 
   return (
@@ -149,7 +151,7 @@ export default function BlogPage() {
               >
                 {/* Botão Voltar para Mobile */}
                 <button
-                  onClick={() => setSelectedPost(null)}
+                  onClick={() => navigate("/blog")}
                   className="lg:hidden terminal-link text-xs mb-5 inline-block cursor-pointer"
                 >
                   ← cd ../Blog
