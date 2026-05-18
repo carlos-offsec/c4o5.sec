@@ -23,7 +23,7 @@ export default function Navbar() {
         {/* Logo */}
         <Link to="/" className="flex items-center gap-3 group" id="nav-logo">
           <img
-            src="/images/logo.png"
+            src="images/logo.png"
             alt="c4o5.sec logo"
             className="w-9 h-9 rounded-lg pulse-glow"
             style={{ transition: "transform 0.3s" }}

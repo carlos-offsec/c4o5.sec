@@ -165,7 +165,7 @@ export default function HeroSection() {
           >
             <div className="float-animation">
               <img
-                src="/images/personagem.png"
+                src="images/personagem.png"
                 alt="Personagem c4o5.sec"
                 id="hero-character"
                 className="w-48 sm:w-64 lg:w-80 xl:w-96"
