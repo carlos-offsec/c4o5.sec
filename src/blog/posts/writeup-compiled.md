@@ -43,5 +43,7 @@ Aprofundando na função de comparação, vi que esse valor extraído da entrada
 
 Com a lógica de validação mapeada, bastou montar a flag unindo a regra de formatação do `scanf` com a string verdadeira da comparação. A senha correta esperada pelo sistema seria, portanto, a junção de tudo.
 
+![foto 4](https://raw.githubusercontent.com/carlos-offsec/c4o5.sec/main/public/images/imagem4.png)
+
 Fiz o teste manual inserindo a string formatada no binário. A entrada foi validada com sucesso, entregando a flag que resolve o desafio.
 
