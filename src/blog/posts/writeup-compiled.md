@@ -17,7 +17,7 @@ A premissa é direta: baixar um arquivo binário Linux compilado e descobrir a f
 
 O primeiro passo é sempre entender o comportamento padrão do executável. Ao rodar o binário, a primeira interação é um prompt simples aguardando a inserção de uma senha.
 
-![foto 1](https://raw.githubusercontent.com/carlos-offsec/c4o5.sec/main/public/images/imagem1.png)
+![foto 6](https://raw.githubusercontent.com/carlos-offsec/c4o5.sec/main/public/images/imagem6.png)
 
 ### 2. Análise Estática com Ghidra
 
