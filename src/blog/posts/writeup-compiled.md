@@ -25,7 +25,7 @@ Sabendo que a senha não estaria exposta de forma trivial em texto claro, parti 
 
 Logo de cara, analisando as strings em memória, encontrei algumas referências interessantes que me deram uma pista de como o fluxo de execução estava sendo controlado.
 
-![foto 2](/images/imagem2.png)
+![foto 2](https://raw.githubusercontent.com/carlos-offsec/c4o5.sec/main/public/images/imagem2.png)
 
 ### 3. Dissecando a Validação e a Armadilha
 
@@ -35,7 +35,7 @@ Isso significa que o executável espera que a entrada variável (o `%s`) esteja 
 
 Aprofundando na função de comparação, vi que esse valor extraído da entrada era comparado contra strings como `_init` e `__dso_handle`.
 
-![foto 3](/images/imagem3.png)
+![foto 3](https://raw.githubusercontent.com/carlos-offsec/c4o5.sec/main/public/images/imagem3.png)
 
 **A grande sacada do desafio:** `_init` e `__dso_handle` não são valores aleatórios. Eles são artefatos reais e padronizados em binários ELF (C/C++), responsáveis pela inicialização e gerenciamento de objetos dinâmicos. O autor da sala os utilizou na comparação propositalmente como uma armadilha. Quem tentasse resolver o desafio executando apenas o comando `strings` no terminal no modo automático acabaria vendo essas funções de sistema e as ignoraria, sem perceber que faziam parte da senha.
 
@@ -45,4 +45,4 @@ Com a lógica de validação mapeada, bastou montar a flag unindo a regra de for
 
 Fiz o teste manual inserindo a string formatada no binário. A entrada foi validada com sucesso, entregando a flag que resolve o desafio.
 
-![foto 4](/images/imagem4.png)
+![foto 4](https://raw.githubusercontent.com/carlos-offsec/c4o5.sec/main/public/images/imagem4.png)
