@@ -46,3 +46,4 @@ Fiz o teste manual inserindo a string formatada no binário. A entrada foi valid
 
 ![foto 5](https://raw.githubusercontent.com/carlos-offsec/c4o5.sec/main/public/images/imagem5.png)
 
+
