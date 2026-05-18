@@ -45,4 +45,3 @@ Com a lógica de validação mapeada, bastou montar a flag unindo a regra de for
 
 Fiz o teste manual inserindo a string formatada no binário. A entrada foi validada com sucesso, entregando a flag que resolve o desafio.
 
-![foto 4](https://raw.githubusercontent.com/carlos-offsec/c4o5.sec/main/public/images/imagem4.png)
