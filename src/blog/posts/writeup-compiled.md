@@ -1,31 +1,48 @@
 ---
 title: "Writeup Compiled - THM"
-date: "2026-05-18"
+date: "2026-05-17"
 author: "c4o5"
 tags: ["Writeup", "tryhackme", "reverse engineering"]
 ---
 
 # Compiled - As strings só podem ajudar você até certo ponto.
 
-Neste post, vou apresentar o passo a passo que realizei para completar a sala Compiled do TryHackMe.
-Esse é um desafio de nível fácil na plataforma, focado na área de Engenharia Reversa e análise de binários.
+Neste post, vou apresentar o passo a passo da resolução da sala **Compiled** do TryHackMe. Este é um desafio de nível fácil focado em Engenharia Reversa e análise estática de binários. Como o próprio subtítulo da sala sugere, o objetivo principal é mostrar que depender apenas da extração de textos legíveis não é suficiente.
 
 ## Objetivo
 
-O desafio é bem direto. A sala fornece um arquivo binário compilado que você precisa baixar (ou acessar de dentro do TryHackMe AttackBox) e analisar. O objetivo final é extrair uma flag respondendo a pergunta: "What is the password?" (Qual é a senha?)
+A premissa é direta: baixar um arquivo binário Linux compilado e descobrir a flag, que é a resposta para a pergunta: "What is the password?".
 
-### Primeiros passos
+### 1. Análise Dinâmica Inicial
 
-Comecei baixando e executando o binário. Como podemos ver na imagem a primeira coisa que aparece quando executamos ele é um input pedindo o password.
-![foto 1](imagem1.png)
+O primeiro passo é sempre entender o comportamento padrão do executável. Ao rodar o binário, a primeira interação é um prompt simples aguardando a inserção de uma senha.
 
+![foto 1](/images/imagem1.png)
 
-Logo após, fui para o ghidra para analizar mais de perto como estava sendo feita aquela validação. Aqui encontrei algumas strings que me deram uma pista de como tudo estava acontecendo.
-![foto 2](imagem2.png)
+### 2. Análise Estática com Ghidra
 
-Analisando um pouco mais a fundo no descompilador, pude ver de fato como que estava sendo feita a validação e encontrei duas strings que poderiam ser a tão sonhada flag.
-a string "_init" e a "__dso_handle"
-![foto 3](imagem3.png)
+Sabendo que a senha não estaria exposta de forma trivial em texto claro, parti para a análise estática no Ghidra para inspecionar as strings e descompilar a função principal. O objetivo aqui era mapear a lógica de validação.
 
-Após um teste manual rápido encontrei a string verdadeira e que completou a flag.
-![foto 4](imagem4.png)
+Logo de cara, analisando as strings em memória, encontrei algumas referências interessantes que me deram uma pista de como o fluxo de execução estava sendo controlado.
+
+![foto 2](/imagesimagem2.png)
+
+### 3. Dissecando a Validação e a Armadilha
+
+Analisando o pseudocódigo gerado pelo descompilador, a lógica do programa ficou clara. A validação não compara a entrada do usuário diretamente com uma única string estática. Em vez disso, notei que o binário processa a entrada utilizando uma formatação específica no momento da leitura: `__isoc99_scanf("DoYouEven%sCTF", local_28)`.
+
+Isso significa que o executável espera que a entrada variável (o `%s`) esteja "envelopada" entre o prefixo `DoYouEven` e o sufixo `CTF`.
+
+Aprofundando na função de comparação, vi que esse valor extraído da entrada era comparado contra strings como `_init` e `__dso_handle`.
+
+![foto 3](/images/imagem3.png)
+
+**A grande sacada do desafio:** `_init` e `__dso_handle` não são valores aleatórios. Eles são artefatos reais e padronizados em binários ELF (C/C++), responsáveis pela inicialização e gerenciamento de objetos dinâmicos. O autor da sala os utilizou na comparação propositalmente como uma armadilha. Quem tentasse resolver o desafio executando apenas o comando `strings` no terminal no modo automático acabaria vendo essas funções de sistema e as ignoraria, sem perceber que faziam parte da senha.
+
+### 4. Juntando as Peças
+
+Com a lógica de validação mapeada, bastou montar a flag unindo a regra de formatação do `scanf` com a string verdadeira da comparação. A senha correta esperada pelo sistema seria, portanto, a junção de tudo.
+
+Fiz o teste manual inserindo a string formatada no binário. A entrada foi validada com sucesso, entregando a flag que resolve o desafio.
+
+![foto 4](/images/imagem4.png)
